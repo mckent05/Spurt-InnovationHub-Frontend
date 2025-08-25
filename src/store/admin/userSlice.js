@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   isLoading: false,
-  allUsers: [],
+  pendingUsers: [],
   updatedUser: {},
 };
 
@@ -14,18 +14,17 @@ const adminUserSlice = createSlice({
       state.isLoading = action.payload;
     },
     getUsers: (state, action) => {
-      state.allUsers = action.payload;
+      state.pendingUsers = action.payload;
     },
     updateUser: (state, action) => {
       const updatedUser = action.payload;
-      state.allUsers = state.allUsers.map((user) =>
-        user._id === updatedUser._id ? { ...updatedUser } : user
+      state.pendingUsers = state.pendingUsers.filter(
+        (user) => user._id !== updatedUser._id
       );
       state.updatedUser = updatedUser;
     },
   },
 });
 
-export const { handleLoading, getUsers, updateUser } =
-  adminUserSlice.actions;
+export const { handleLoading, getUsers, updateUser } = adminUserSlice.actions;
 export default adminUserSlice.reducer;

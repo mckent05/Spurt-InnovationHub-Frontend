@@ -17,7 +17,7 @@ const expertSlice = createSlice({
       state.experts = action.payload;
     },
     createExpert: (state, action) => {
-      state.projects.push(action.payload);
+      state.experts.push(action.payload);
     },
     updateExpert: (state, action) => {
       const updatedExpert = action.payload;

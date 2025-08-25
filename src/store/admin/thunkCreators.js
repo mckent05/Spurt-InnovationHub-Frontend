@@ -3,14 +3,14 @@ import { getToken, baseURL } from "../utils/sessions";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { toast } from "react-toastify";
 
-export const fetchAllUsers = createAsyncThunk(
+export const fetchPendingUsers = createAsyncThunk(
   "get/experts",
   async (_, { dispatch, rejectWithValue }) => {
     const token = getToken();
     dispatch(handleLoading(true));
 
     try {
-      const response = await fetch(`${baseURL}/admin/users`, {
+      const response = await fetch(`${baseURL}/admin/users?status=pending`, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
@@ -40,7 +40,7 @@ export const updateUserAPI = createAsyncThunk(
 
     try {
       const response = await fetch(`${baseURL}/admin/users/${id}/${action}`, {
-        method: "PATCH",
+        method: "PUT",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,

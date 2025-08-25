@@ -1,7 +1,7 @@
 import React from 'react'
 import { Outlet } from 'react-router-dom'
 
-const ExpertDashboard = () => {
+const StartupDashboard = () => {
   return (
     <div>
       
@@ -10,4 +10,4 @@ const ExpertDashboard = () => {
   )
 }
 
-export default ExpertDashboard
+export default StartupDashboard

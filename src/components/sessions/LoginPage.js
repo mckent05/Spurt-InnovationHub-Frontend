@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { handleSignIn } from "../../store/sessions/thunkCreators";
 import Input from "./Input";
 import Navigation from "./Navigation";
@@ -10,6 +10,9 @@ import Title from "./Title";
 const LoginPage = ({ loading, signedIn }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  // ✅ Fixed: correctly pick role
+  const role = useSelector((state) => state.user.user?.role);
 
   const [userDetails, setUserDetails] = useState({
     email: "",
@@ -31,11 +34,25 @@ const LoginPage = ({ loading, signedIn }) => {
     }
   };
 
-  useEffect(() => {
-    if (signedIn) {
-      navigate("/");
-    }
-  }, [signedIn, navigate]);
+  // useEffect(() => {
+  //   console.log(signedIn, role)
+  //   if (signedIn && role) {
+  //     switch (role) {
+  //       case "admin":
+  //         console.log("I am in the admin")
+  //         navigate("/admin-dashboard", { replace: true });
+  //         break;
+  //       case "hub_manager":
+  //         navigate("/manager-dashboard", { replace: true });
+  //         break;
+  //       case "expert":
+  //         navigate("/dashboard", { replace: true });
+  //         break;
+  //       default:
+  //         navigate("/", { replace: true });
+  //     }
+  //   }
+  // }, [signedIn, navigate, role]);
 
   return (
     <div className="container-fluid min-vh-100 bg-white">

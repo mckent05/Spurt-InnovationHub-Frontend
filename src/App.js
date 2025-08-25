@@ -3,19 +3,23 @@ import { useDispatch, useSelector } from "react-redux";
 import "./App.css";
 import LoginPage from "./components/sessions/LoginPage";
 import RegisterPage from "./components/sessions/RegisterPage";
+import ExpertBookingDetails from "./components/experts/ExpertBookingDetails";
+import ExpertBookings from "./components/experts/ExpertBookings";
+import AddNewExpert from "./components/experts/AddNewExpert";
+import ExpertDashboard from "./pages/ExpertDashboard/ExpertDashboard";
+import ManagerDashboard from "./pages/ManagerDashboard/ManagerDashboard";
+import AdminDashboard from "./pages/AdminDashboard/AdminDashboard";
+import HubBookingDetails from "./components/hubs/HubBookingDetails";
+import HubBookings from "./components/hubs/HubBookings";
+import AddNewHub from "./components/hubs/AddNewHub";
+import AdminOverview from "./components/admin/AdminOverview";
 import { fetchUserProfile } from "./store/user/thunkCreators";
-// import ClientDetailsPage from "./pages/ClientDetails";
-// import ClientListPage from "./pages/ClientListPage";
-// import ClientPage from "./pages/ClientPage";
-// import ProjectPage from "./pages/ProjectPage";
-// import ProjectListPage from "./pages/ProjectListPage";
-// import AddNewProjectPage from "./pages/AddNewProjectPage";
-// import AddNewClientPage from "./pages/AddNewClientPage";
 import Main from "./pages/Main";
 import ProtectedRoute from "./components/ProtectedRoute";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useEffect } from "react";
+import Unauthorized from "./components/Unauthorized";
 
 function App() {
   const sessionDetails = useSelector((state) => state.sessions);
@@ -42,56 +46,66 @@ function App() {
         draggable
       />
       <Routes>
+        {/* Public Routes */}
         <Route
           path="/login"
           element={<LoginPage loading={isLoading} signedIn={isSignedIn} />}
         />
         <Route path="/register" element={<RegisterPage />} />
 
+        {/* Protected Routes */}
         <Route element={<ProtectedRoute />}>
           <Route path="/" element={<Main />}>
-            {/* Expert routes */}
+            {/* Default route for root path */}
+            <Route index element={<div>Welcome to the App</div>} />{" "}
+            {/* Replace with actual component */}
+            {/* Expert Routes */}
             <Route
               path="dashboard"
-              element={<ProtectedRoute allowedRoles={["expert"]} />}
+              element={
+                <ProtectedRoute allowedRoles={["expert"]}>
+                  <ExpertDashboard />
+                </ProtectedRoute>
+              }
             >
-              <Route element={<ExpertDashboard />}>
-                <Route index element={<ExpertBookingsPage />} />
-                <Route
-                  path="booking/:id"
-                  element={<ExpertBookingDetailsPage />}
-                />
-                <Route path="add-new/expert" element={<AddNewExpert />} />
-                <Route path="edit/:id" element={<AddNewExpert />} />
-              </Route>
+              <Route index element={<ExpertBookings />} />
+              <Route path="booking/:id" element={<ExpertBookingDetails />} />
+              <Route path="add-new/expert" element={<AddNewExpert />} />
+              <Route path="edit/:id" element={<AddNewExpert />} />
             </Route>
-
-            {/* Manager routes */}
+            {/* Manager Routes */}
             <Route
               path="manager-dashboard"
-              element={<ProtectedRoute allowedRoles={["hub_manager"]} />}
+              element={
+                <ProtectedRoute allowedRoles={["hub_manager"]}>
+                  <ManagerDashboard />
+                </ProtectedRoute>
+              }
             >
-              <Route element={<ManagerDashboard />}>
-                <Route index element={<HubBookingsPage />} />
-                <Route path="booking/:id" element={<HubBookingDetailsPage />} />
-                <Route path="add-new" element={<AddNewHub />} />
-                <Route path="edit/:id" element={<AddNewHub />} />
-              </Route>
+              <Route index element={<HubBookings />} />
+              <Route path="booking/:id" element={<HubBookingDetails />} />
+              <Route path="add-new" element={<AddNewHub />} />
+              <Route path="edit/:id" element={<AddNewHub />} />
             </Route>
-
-            {/* Admin routes */}
+            {/* Admin Routes */}
             <Route
               path="admin-dashboard"
-              element={<ProtectedRoute allowedRoles={["admin"]} />}
+              element={
+                <ProtectedRoute allowedRoles={["admin"]}>
+                  <AdminDashboard />
+                </ProtectedRoute>
+              }
             >
-              <Route element={<AdminDashboard />}>
-                <Route index element={<AdminOverviewPage />} />
-                <Route path="users" element={<ManageUsersPage />} />
-                <Route path="settings" element={<AdminSettingsPage />} />
-              </Route>
+              {/* Uncomment and implement these routes as needed */}
+              <Route index element={<AdminOverview />} />
+              {/* <Route path="users" element={<ManageUsersPage />} /> */}
+              {/* <Route path="settings" element={<AdminSettingsPage />} /> */}
             </Route>
           </Route>
         </Route>
+
+        {/* Catch-all route for 404 */}
+        <Route path="*" element={<Unauthorized />} />
       </Routes>
     </div>
   );
