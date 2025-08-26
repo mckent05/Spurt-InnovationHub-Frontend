@@ -6,6 +6,7 @@ import UserApproval from "./UserApproval";
 import HubsPane from "./HubsPane";
 import { fetchHubs } from "../../store/hubs/thunkCreators";
 import ExpertDirectory from "./ExpertDirectory";
+import BookingsPane from "./BookingsPane";
 import {
   Container,
   Row,
@@ -26,6 +27,7 @@ import {
   ToastContainer,
   Card,
 } from "react-bootstrap";
+import { fetchExpertBookings } from "../../store/expertBooking/thunkCreators";
 // import {
 //   LineChart,
 //   Line,
@@ -51,10 +53,13 @@ const AdminOverview = () => {
 
   const hubs = useSelector((state) => state.hubs.hubs);
 
+  const expertBookings = useSelector((state) => state.hubs.hubs);
+
   useEffect(() => {
     dispatch(fetchPendingUsers());
     dispatch(fetchExperts());
     dispatch(fetchHubs());
+    dispatch(fetchExpertBookings());
   }, []);
 
   const [toast, setToast] = useState({
@@ -65,7 +70,7 @@ const AdminOverview = () => {
   return (
     <Tab.Container fluid className="p-3" defaultActiveKey="analytics">
       <Row>
-        <Col md={2} className="mb-3">
+        <Col md={2} className="mb-3 mt-1">
           <h5 className="mb-3">Admin Dashboard</h5>
           <Nav
             variant="pills"
@@ -95,7 +100,7 @@ const AdminOverview = () => {
             </Nav.Item>
           </Nav>
         </Col>
-        <Col md={10}>
+        <Col md={10} className="mt-3">
           <Col>
             <Tab.Content>
               {/* <Tab.Pane eventKey="analytics">
@@ -119,13 +124,12 @@ const AdminOverview = () => {
                   // onExport={exportHubs}
                 />
               </Tab.Pane>
-              {/* <Tab.Pane eventKey="bookings">
-                    <BookingsPane
-                      bookings={bookings}
-                      onUpdateStatus={updateBookingStatus}
-                      onExport={exportBookings}
-                    />
-                  </Tab.Pane> */}
+              <Tab.Pane eventKey="bookings">
+                <BookingsPane
+                  bookings={expertBookings}
+                  // onExport={exportBookings}
+                />
+              </Tab.Pane>
               {/* <Tab.Pane eventKey="payments">
                     <PaymentsPane
                       payments={payments}

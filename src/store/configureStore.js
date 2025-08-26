@@ -6,13 +6,15 @@ import userReducer from "./user/userSlice";
 import adminReducer from "./admin/userSlice"
 import expertReducer from "./experts/expertSlice"
 import hubReducer from "./hubs/hubSlice"
+import expertBookingReducer from './expertBooking/expertBookingSlice'
 
 const reducer = combineReducers({
   sessions: sessionReducer,
   user: userReducer,
   adminUsers: adminReducer,
   experts: expertReducer,
-  hubs: hubReducer
+  hubs: hubReducer,
+  expertBookings: expertBookingReducer
 });
 
 const store = createStore(reducer, applyMiddleware(thunk, logger));
